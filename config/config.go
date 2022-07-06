@@ -7,10 +7,8 @@ import (
 )
 
 type Config struct {
-	Environment string // develop, staging, production
-
-	PostsCRUDServiceHost string
-	PostsCRUDServicePort int
+	PostsServiceHost string
+	PostsServicePort int
 
 	HttpPort string
 }
@@ -18,12 +16,10 @@ type Config struct {
 func Load() Config {
 	config := Config{}
 
-	config.Environment = cast.ToString(getOrReturnDefault("ENVIRONMENT", "develop"))
+	config.HttpPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":8081"))
 
-	config.HttpPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":8080"))
-
-	config.PostsCRUDServiceHost = cast.ToString(getOrReturnDefault("POSTS_CRUD_SERVICE_HOST", "localhost"))
-	config.PostsCRUDServicePort = cast.ToInt(getOrReturnDefault("POSTS_CRUD_SERVICE_PORT", 8081))
+	config.PostsServiceHost = cast.ToString(getOrReturnDefault("POSTS_CRUD_SERVICE_HOST", "localhost"))
+	config.PostsServicePort = cast.ToInt(getOrReturnDefault("POSTS_CRUD_SERVICE_PORT", 8082))
 
 	return config
 }

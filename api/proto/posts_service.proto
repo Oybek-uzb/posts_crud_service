@@ -4,7 +4,7 @@ package api;
 
 option go_package = "/posts_service";
 
-service PostsCRUDService {
+service PostsService {
   rpc GetAllPosts(GetAllPostsRequest) returns (GetAllPostsResponse) {}
   rpc GetPost(GetPostRequest) returns (GetPostResponse) {}
   rpc UpdatePartialPost(UpdatePartialPostRequest) returns (UpdatePartialPostResponse) {}
