@@ -3,75 +3,153 @@ package services
 import (
 	"context"
 	"fmt"
-	pbp "github.com/Oybek-uzb/posts_crud_service/pkg/api/posts_crud_service"
-	pcs "github.com/Oybek-uzb/posts_crud_service/pkg/api/posts_crud_service"
+	pbpc "github.com/Oybek-uzb/posts_crud_service/pkg/api/posts_crud_service"
+	pbp "github.com/Oybek-uzb/posts_crud_service/pkg/api/posts_service"
+	"github.com/Oybek-uzb/posts_crud_service/services"
+	"time"
 )
 
 type postsCRUDService struct {
-	pbp.UnimplementedPostsCRUDServiceServer
+	pbpc.UnimplementedPostsCRUDServiceServer
+	Services services.ServiceManager
 }
 
-func NewPostsCRUDService() *postsCRUDService {
-	return &postsCRUDService{}
+func NewPostsCRUDService(ss services.ServiceManager) *postsCRUDService {
+	return &postsCRUDService{
+		Services: ss,
+	}
 }
 
-func (s *postsCRUDService) GetAllPosts(ctx context.Context, req *pcs.GetAllPostsRequest) (*pcs.GetAllPostsResponse, error) {
+func (s *postsCRUDService) GetAllPosts(ctx context.Context, req *pbpc.GetAllPostsRequest) (*pbpc.GetAllPostsResponse, error) {
 	fmt.Println(req)
 
-	var posts []*pcs.Post
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
+	defer cancel()
 
-	posts = append(posts, &pcs.Post{
-		Id:     11,
-		UserId: 11,
-		Title:  "Any title",
-		Body:   "Any body",
+	response, err := s.Services.PostsService().GetAllPosts(ctx, &pbp.GetAllPostsRequest{})
+	if err != nil {
+		return nil, err
+	}
+
+	var allPosts []*pbpc.Post
+	var postsLen = len(response.Posts)
+
+	if postsLen == 0 {
+		return &pbpc.GetAllPostsResponse{
+			Posts: []*pbpc.Post{},
+		}, nil
+	}
+	for _, post := range response.Posts {
+		newPost := pbpc.Post{
+			Id:     post.Id,
+			UserId: post.UserId,
+			Title:  post.Title,
+			Body:   post.Body,
+		}
+
+		allPosts = append(allPosts, &newPost)
+	}
+
+	return &pbpc.GetAllPostsResponse{
+		Posts: allPosts,
+	}, nil
+}
+
+func (s *postsCRUDService) GetPost(ctx context.Context, req *pbpc.GetPostRequest) (*pbpc.GetPostResponse, error) {
+	fmt.Println(req)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
+	defer cancel()
+
+	response, err := s.Services.PostsService().GetPost(ctx, &pbp.GetPostRequest{
+		Id: req.GetId(),
 	})
+	if err != nil {
+		return nil, err
+	}
 
-	return &pcs.GetAllPostsResponse{
-		Posts: posts,
+	if response.Post == nil {
+		return &pbpc.GetPostResponse{
+			Post: nil,
+		}, nil
+	}
+
+	var newPost = &pbpc.Post{
+		Id:     response.Post.Id,
+		UserId: response.Post.UserId,
+		Title:  response.Post.Title,
+		Body:   response.Post.Body,
+	}
+
+	return &pbpc.GetPostResponse{
+		Post: newPost,
 	}, nil
 }
 
-func (s *postsCRUDService) GetPost(ctx context.Context, req *pcs.GetPostRequest) (*pcs.GetPostResponse, error) {
+func (s *postsCRUDService) UpdatePartialPost(ctx context.Context, req *pbpc.UpdatePartialPostRequest) (*pbpc.UpdatePartialPostResponse, error) {
 	fmt.Println(req)
 
-	post := pcs.Post{
-		Id:     11,
-		UserId: 11,
-		Title:  "Any title",
-		Body:   "Any body",
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
+	defer cancel()
+
+	var updateData = pbp.Post{
+		Id:     req.UpdateData.Id,
+		UserId: req.UpdateData.UserId,
+		Title:  req.UpdateData.Title,
+		Body:   req.UpdateData.Body,
 	}
 
-	return &pcs.GetPostResponse{
-		Post: &post,
+	response, err := s.Services.PostsService().UpdatePartialPost(ctx, &pbp.UpdatePartialPostRequest{
+		UpdateData: &updateData,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if response.UpdatedPost == nil {
+		return &pbpc.UpdatePartialPostResponse{
+			UpdatedPost: nil,
+		}, nil
+	}
+
+	var newPost = &pbpc.Post{
+		Id:     response.UpdatedPost.Id,
+		UserId: response.UpdatedPost.UserId,
+		Title:  response.UpdatedPost.Title,
+		Body:   response.UpdatedPost.Body,
+	}
+
+	return &pbpc.UpdatePartialPostResponse{
+		UpdatedPost: newPost,
 	}, nil
 }
-
-func (s *postsCRUDService) UpdatePartialPost(ctx context.Context, req *pcs.UpdatePartialPostRequest) (*pcs.UpdatePartialPostResponse, error) {
+func (s *postsCRUDService) DeletePost(ctx context.Context, req *pbpc.DeletePostRequest) (*pbpc.DeletePostResponse, error) {
 	fmt.Println(req)
 
-	post := pcs.Post{
-		Id:     11,
-		UserId: 11,
-		Title:  "Any title",
-		Body:   "Any body",
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
+	defer cancel()
+
+	response, err := s.Services.PostsService().DeletePost(ctx, &pbp.DeletePostRequest{
+		Id: req.GetId(),
+	})
+	if err != nil {
+		return nil, err
 	}
 
-	return &pcs.UpdatePartialPostResponse{
-		UpdatedPost: &post,
-	}, nil
-}
-func (s *postsCRUDService) DeletePost(ctx context.Context, req *pcs.DeletePostRequest) (*pcs.DeletePostResponse, error) {
-	fmt.Println(req)
-
-	post := pcs.Post{
-		Id:     11,
-		UserId: 11,
-		Title:  "Any title",
-		Body:   "Any body",
+	if response.DeletedPost == nil {
+		return &pbpc.DeletePostResponse{
+			DeletedPost: nil,
+		}, nil
 	}
 
-	return &pcs.DeletePostResponse{
-		DeletedPost: &post,
+	var deletedPost = &pbpc.Post{
+		Id:     response.DeletedPost.Id,
+		UserId: response.DeletedPost.UserId,
+		Title:  response.DeletedPost.Title,
+		Body:   response.DeletedPost.Body,
+	}
+
+	return &pbpc.DeletePostResponse{
+		DeletedPost: deletedPost,
 	}, nil
 }

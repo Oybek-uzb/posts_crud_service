@@ -18,8 +18,8 @@ func Load() Config {
 
 	config.HttpPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":8081"))
 
-	config.PostsServiceHost = cast.ToString(getOrReturnDefault("POSTS_CRUD_SERVICE_HOST", "localhost"))
-	config.PostsServicePort = cast.ToInt(getOrReturnDefault("POSTS_CRUD_SERVICE_PORT", 8082))
+	config.PostsServiceHost = cast.ToString(getOrReturnDefault("POSTS_SERVICE_HOST", "localhost"))
+	config.PostsServicePort = cast.ToInt(getOrReturnDefault("POSTS_SERVICE_PORT", 8082))
 
 	return config
 }

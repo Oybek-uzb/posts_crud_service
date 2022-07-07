@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.2
-// source: posts_service.proto
+// source: posts_service/posts_service.proto
 
 package posts_service
 
@@ -38,7 +38,7 @@ func NewPostsServiceClient(cc grpc.ClientConnInterface) PostsServiceClient {
 
 func (c *postsServiceClient) GetAllPosts(ctx context.Context, in *GetAllPostsRequest, opts ...grpc.CallOption) (*GetAllPostsResponse, error) {
 	out := new(GetAllPostsResponse)
-	err := c.cc.Invoke(ctx, "/api.PostsService/GetAllPosts", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/posts_service.PostsService/GetAllPosts", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *postsServiceClient) GetAllPosts(ctx context.Context, in *GetAllPostsReq
 
 func (c *postsServiceClient) GetPost(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostResponse, error) {
 	out := new(GetPostResponse)
-	err := c.cc.Invoke(ctx, "/api.PostsService/GetPost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/posts_service.PostsService/GetPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (c *postsServiceClient) GetPost(ctx context.Context, in *GetPostRequest, op
 
 func (c *postsServiceClient) UpdatePartialPost(ctx context.Context, in *UpdatePartialPostRequest, opts ...grpc.CallOption) (*UpdatePartialPostResponse, error) {
 	out := new(UpdatePartialPostResponse)
-	err := c.cc.Invoke(ctx, "/api.PostsService/UpdatePartialPost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/posts_service.PostsService/UpdatePartialPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *postsServiceClient) UpdatePartialPost(ctx context.Context, in *UpdatePa
 
 func (c *postsServiceClient) DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*DeletePostResponse, error) {
 	out := new(DeletePostResponse)
-	err := c.cc.Invoke(ctx, "/api.PostsService/DeletePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/posts_service.PostsService/DeletePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func _PostsService_GetAllPosts_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.PostsService/GetAllPosts",
+		FullMethod: "/posts_service.PostsService/GetAllPosts",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostsServiceServer).GetAllPosts(ctx, req.(*GetAllPostsRequest))
@@ -140,7 +140,7 @@ func _PostsService_GetPost_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.PostsService/GetPost",
+		FullMethod: "/posts_service.PostsService/GetPost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostsServiceServer).GetPost(ctx, req.(*GetPostRequest))
@@ -158,7 +158,7 @@ func _PostsService_UpdatePartialPost_Handler(srv interface{}, ctx context.Contex
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.PostsService/UpdatePartialPost",
+		FullMethod: "/posts_service.PostsService/UpdatePartialPost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostsServiceServer).UpdatePartialPost(ctx, req.(*UpdatePartialPostRequest))
@@ -176,7 +176,7 @@ func _PostsService_DeletePost_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/api.PostsService/DeletePost",
+		FullMethod: "/posts_service.PostsService/DeletePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostsServiceServer).DeletePost(ctx, req.(*DeletePostRequest))
@@ -188,7 +188,7 @@ func _PostsService_DeletePost_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PostsService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "api.PostsService",
+	ServiceName: "posts_service.PostsService",
 	HandlerType: (*PostsServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -209,5 +209,5 @@ var PostsService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "posts_service.proto",
+	Metadata: "posts_service/posts_service.proto",
 }

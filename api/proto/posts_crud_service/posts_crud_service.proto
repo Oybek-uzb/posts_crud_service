@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package api;
+package posts_crud_service;
 
-option go_package = "/posts_service";
+option go_package = "/posts_crud_service";
 
-service PostsService {
+service PostsCRUDService {
   rpc GetAllPosts(GetAllPostsRequest) returns (GetAllPostsResponse) {}
   rpc GetPost(GetPostRequest) returns (GetPostResponse) {}
   rpc UpdatePartialPost(UpdatePartialPostRequest) returns (UpdatePartialPostResponse) {}
