@@ -2,11 +2,11 @@ package services
 
 import (
 	"context"
-	"fmt"
+	"time"
+
 	pbpc "github.com/Oybek-uzb/posts_crud_service/pkg/api/posts_crud_service"
 	pbp "github.com/Oybek-uzb/posts_crud_service/pkg/api/posts_service"
 	"github.com/Oybek-uzb/posts_crud_service/services"
-	"time"
 )
 
 type postsCRUDService struct {
@@ -21,8 +21,6 @@ func NewPostsCRUDService(ss services.ServiceManager) *postsCRUDService {
 }
 
 func (s *postsCRUDService) GetAllPosts(ctx context.Context, req *pbpc.GetAllPostsRequest) (*pbpc.GetAllPostsResponse, error) {
-	fmt.Println(req)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
 	defer cancel()
 
@@ -56,8 +54,6 @@ func (s *postsCRUDService) GetAllPosts(ctx context.Context, req *pbpc.GetAllPost
 }
 
 func (s *postsCRUDService) GetPost(ctx context.Context, req *pbpc.GetPostRequest) (*pbpc.GetPostResponse, error) {
-	fmt.Println(req)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
 	defer cancel()
 
@@ -87,8 +83,6 @@ func (s *postsCRUDService) GetPost(ctx context.Context, req *pbpc.GetPostRequest
 }
 
 func (s *postsCRUDService) UpdatePartialPost(ctx context.Context, req *pbpc.UpdatePartialPostRequest) (*pbpc.UpdatePartialPostResponse, error) {
-	fmt.Println(req)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
 	defer cancel()
 
@@ -124,8 +118,6 @@ func (s *postsCRUDService) UpdatePartialPost(ctx context.Context, req *pbpc.Upda
 	}, nil
 }
 func (s *postsCRUDService) DeletePost(ctx context.Context, req *pbpc.DeletePostRequest) (*pbpc.DeletePostResponse, error) {
-	fmt.Println(req)
-
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(7))
 	defer cancel()
 
